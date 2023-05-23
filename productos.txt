@@ -1,0 +1,1 @@
+[{"id":4,"title":"Ford","description":"Nafta","price":"3500","thumbnail":"EE.UU","code":"cod1","stock":4},{"id":1,"title":"Mercedez","description":"Diesel","price":"5000","thumbnail":"Alemania","code":3,"stock":11},{"id":3,"title":"BMW","description":"Nafta","price":"4500","thumbnail":"Alemania","code":"cod2","stock":7}]
