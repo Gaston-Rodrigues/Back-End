@@ -18,7 +18,7 @@ await fs.unlink("Auto.txt")
 auto()
 */
 
-class ProductManager {
+export default class ProductManager {
 
     constructor(){
         this.patch = "productos.txt"
@@ -86,22 +86,27 @@ addProduct = async (title,description,price,thumbnail,code,stock)=>{
 }
 
 
-  const productos= new ProductManager
+  //const productos= new ProductManager
   
-  /*productos.addProduct('Mercedez', 'Diesel', '5000', 'Alemania', 3, 11)
-  productos.addProduct('Audi', 'Diesel', '3500', 'Alemania','cod2' ,8);
+  /*productos.addProduct('Mercedez', 'Diesel', '5000', 'Alemania', `cod6`, 11)
+  productos.addProduct('Audi', 'Diesel', '3500', 'Alemania','cod4' ,8);
   productos.addProduct('BMW', 'Nafta', '4500', 'Alemania', 'cod2', 7);
-  productos.addProduct('Ford', 'Nafta', '2500', 'EE.UU', 'cod1', 4); */  
+  productos.addProduct('Ford', 'Nafta', '2500', 'EE.UU', 'cod1', 4);
+  productos.addProduct('Nissan', 'Diesel', '3000', 'Japón','cod7' ,9);
+  productos.addProduct('Volvo', 'Nafta', '5000', 'Suecia', 'cod3', 6);
+  productos.addProduct('Fiat', 'Nafta', '2000', 'Italia', 'cod5', 5);
+  */
+  
 
-  //productos.getProducts();
+//productos.getProducts();
 
   //productos.getProductsById(8);
  // productos. deleteProductsById(2)
 
- productos.updateProducts({  id: 4,
+ /*productos.updateProducts({  id: 4,
     title: 'Ford',
     description: 'Nafta',
     price: '3500',
     thumbnail: 'EE.UU',
     code: 'cod1',
-    stock: 4})
+    stock: 4})*/
