@@ -1,7 +1,8 @@
 <div>
     <h1>Nuestros Productos</h1>
-    <br><br><br>
-    {{#each payload}}
+    <h2>Bienvenid@ {{user.first_name}} {{user.last_name}}</h2>
+    <br><br>
+    {{#each products.payload}}
         <div class="product-item">
             <p>Id: {{this._id}}</p>
             <p>Titulo: {{this.title}}</p>
@@ -14,7 +15,7 @@
             <button id="{{this._id}}">AGREGAR AL CARRITO</button>
             <br><br>
         </div>
-    {{/each}}
+    {{/each}} 
 </div>
 
 {{#if hasPrevPage}}

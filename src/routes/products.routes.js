@@ -77,6 +77,4 @@ productsRoutes.put('/:uId', async (req, res) => {
   }
 })
 
-
-
 export default productsRoutes
