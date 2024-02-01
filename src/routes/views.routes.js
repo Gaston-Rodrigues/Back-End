@@ -26,6 +26,7 @@ viewsRoutes.get('/chats', (req, res) => {
 })
 
 
+
 viewsRoutes.get('/products', async (req, res) => {
   try {
     const { page } = req.query;
@@ -38,6 +39,16 @@ viewsRoutes.get('/products', async (req, res) => {
     res.status(500).send('Error interno del servidor');
   }
 });
+
+viewsRoutes.get('/failregister', (req, res) => {
+  res.render('failregister')
+})
+
+viewsRoutes.get('/faillogin', (req, res) => {
+  res.render('faillogin')
+
+})
+
 
 
 

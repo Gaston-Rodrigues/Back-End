@@ -8,6 +8,7 @@ export const checkAuth = (req, res, next) => {
 export const checkExistingUser = (req, res, next) => {
     if(req.session.user){
         return res.redirect('/')
-    }
+    } else{
     next()
+}
 }
