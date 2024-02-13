@@ -6,7 +6,8 @@ import passport from "passport";
 const sessionRoutes = Router()
 
 
-sessionRoutes.post('/register', passport.authenticate('register', {failureRedirect: '/failregister'}), async (req, res) => {
+sessionRoutes.post('/register', passport.authenticate('register', {failureRedirect: '/failregister'}),
+ async (req, res) => {
   res.status(201).send({message: 'Usuario registrado'})
 })
 
@@ -47,6 +48,21 @@ sessionRoutes.get('/githubcallback', passport.authenticate('github', {failureRed
         req.session.user = req.user
         res.redirect('/')
     }
+
 )
 
+sessionRoutes.post("/recovery", async (req, res) => {
+    const {email, password} = req.body;
+    const user = await userModel.findOne({email});
+    if(!user){
+        return res.status(400).send({message: 'Error'});
+    }
+    user.password = createHash(password);
+    user.save();
+    res.send({message: 'cambio de contraseña con exito!'});
+});
+
+sessionRoutes.post("/current", async(req,res)=>{
+    res.send("Usuario actual: " + req.session.user.email)
+})
 export default sessionRoutes
