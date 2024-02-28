@@ -19,9 +19,20 @@ import session from 'express-session'
 import MongoStore from 'connect-mongo'
 import initializePassport from './config/passport.config.js'
 import { secret } from './config/consts.js'
+import { getVariables } from './config/config.js'
 
-const PORT = 8080
+import { Command } from 'commander'
+
+
 const app = express()
+
+const program = new Command()
+program.option('--mode <mode>', 'Modo de trabajo', 'production')
+const options = program.parse()
+const { PORT, MONGO_URL } = getVariables(options)
+
+console.log(PORT)
+console.log(MONGO_URL)
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -32,7 +43,7 @@ app.use(express.static('public'))
 app.use(session({
     secret: secret,
     store: MongoStore.create({
-        mongoUrl: 'mongodb+srv://fabelinho5:159Chelseafc@coder.h2ztgkp.mongodb.net/ecommerce'
+        mongoUrl: MONGO_URL
        
     }),
     resave: true,
@@ -57,7 +68,7 @@ app.set('views', 'src/views')
 app.set('view engine', 'handlebars')
 
 
-mongoose.connect('mongodb+srv://fabelinho5:159Chelseafc@coder.h2ztgkp.mongodb.net/ecommerce')
+mongoose.connect(MONGO_URL)
 
 
 app.use('/api/productsfs', productsRoutesFS)
