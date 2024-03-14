@@ -27,3 +27,25 @@ export const checkLogin = async (req, res, next) => {
         console.error(error);
     }
 }
+
+
+export const authorizationAdmin = async (req,res,next)=>{
+    
+if(req.session.user.role === "admin"){
+    next()
+}
+else{
+     return res.status(401).send({message: "Unauthorization"})
+}
+
+}
+
+export const authorizationUser = async (req,res,next)=>{
+    if(req.session.user.role === "user"){
+        next()
+    }
+    else{
+         return res.status(401).send({message: "Unauthorization"})
+    }
+    
+    }

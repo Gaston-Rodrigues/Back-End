@@ -1,5 +1,8 @@
-import ProdManager from "../dao/ProductManagerMongo.js";
+import ProdManager from "../dao/mongo/ProductManagerMongo.js";
 import { productsModel } from "../models/products.model.js"
+import ProductDto from "../dao/dto/product.dto.js";
+
+
 
 export const getProducts = async (req, res) => {
     try {
@@ -8,7 +11,7 @@ export const getProducts = async (req, res) => {
       const resultado = await products.getProducts(limit, page, query, sort)
   
       if(resultado){
-        res.send(resultado)
+       return  res.send(resultado)
       } else {
         res.status(400).json(resultado)
       }
@@ -33,6 +36,7 @@ export const postProduct = async (req, res) => {
     try {
       const newProduct = req.body
       const added = await productsModel.create(newProduct)
+      const result = new ProductDto(added)
       res.status(201).json({message: 'Producto añadido'})
     } catch (error) {
       console.error(error)
@@ -69,4 +73,4 @@ export const putProduct = async (req, res) => {
       console.error(error)
       res.status(400).json({message: `No se pudo modificar el producto - ${error}`})
     }
-  }
+  }    

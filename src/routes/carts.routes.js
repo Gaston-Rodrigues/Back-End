@@ -1,6 +1,9 @@
 import { Router } from "express";
 import { getCarts, getCartsById, postCart,deleteCartById, putCartById, putProductsInCart, deleteProductsInCart,
-   postProductsInCart } from "../controllers/carts.controller.js";
+   postProductsInCart, 
+   purchaseCart} from "../controllers/carts.controller.js";
+import { authorizationUser } from "../middlewares/auth.js";
+
 
 
 const cartsRoutes = Router()
@@ -17,12 +20,14 @@ cartsRoutes.delete('/:cId/products/:pId', deleteCartById)
 
 cartsRoutes.put('/:cId', putCartById)
 
-cartsRoutes.put('/:cId/products/:pId', putProductsInCart)
+cartsRoutes.put('/:cId/products/:pId',authorizationUser, putProductsInCart)
 
 cartsRoutes.delete('/:cId', deleteProductsInCart)
 
 
-cartsRoutes.post("/:cId/product/:pId", postProductsInCart)
+cartsRoutes.post("/:cId/product/:pId",authorizationUser, postProductsInCart)
+
+cartsRoutes.post("/:cId/purchase", purchaseCart)
 
 
-export default cartsRoutes
+export default cartsRoutes 

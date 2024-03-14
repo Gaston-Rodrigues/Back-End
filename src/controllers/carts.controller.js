@@ -1,5 +1,11 @@
 import { cartsModel } from "../models/carts.model.js"
-import CartManager from "../dao/CarritoManagerMongo.js";
+import CartManager from "../dao/mongo/CarritoManagerMongo.js";
+import Ticket from "../dao/mongo/TicketManagerMongo.js";
+import ProdManager from "../dao/mongo/ProductManagerMongo.js";
+
+const ticketService = new Ticket()
+const cartService = new CartManager()
+const productService = new ProdManager()
 
 export const getCarts = async (req, res) => {
     try {
@@ -75,15 +81,15 @@ export const putCartById = async (req, res) => {
 }
 
 export const putProductsInCart = async (req, res) => {
-  const cartManager = new CartManager()
+
   const { cId, pId} = req.params
   const {quantity} = req.body
 
-  const result = await cartManager.updateProductInCart(cId, pId, quantity)
+  const result = await cartService.updateProductInCart(cId, pId, quantity)
   console.log(result)
 
   if(result){
-    res.send({message: "Producto actualizado"})
+   return res.send({message: "Producto actualizado"})
   }
   else {
     res.status(400).send({message: "NO se pudo actualizar el producto "})
@@ -126,3 +132,41 @@ export const postProductsInCart = async (req,res)=>{
     res.status(400).send({error});
   }
 }
+
+export const purchaseCart = async(req,res)=>{
+try {
+  
+const  {cId} = req.params
+const cart = await cartService.getCartById(cId)
+const productNotAvailable = cart.products.filter( product => product.product.stock < product.quantity)
+if(productNotAvailable){
+ return {message: "Product dont available", rto: productNotAvailable}
+}
+const productAvailable = cart.products.filter(product => product.product.stock >= product.quantity)
+const priceTotal = productAvailable.reduce((acc, product) =>{
+return acc + (product.product.price * product.quantity)
+},0 )
+
+for (const product of productAvailable) {
+  const result = (product.product.stock - product.quantity)
+  const newStock = {
+    stock : result
+  }
+
+  await productService.updateProduct(product.product._id, newStock)
+}
+
+const Ticket = {
+   purchase : req.user.email,
+   purchase_datatime : new Date(),
+   amount : priceTotal,
+   code: Math.floor(Math.random() * 500000)+300000
+}
+await ticketService.addTicket(Ticket);
+return res.send({message: "ticket created"})
+
+} catch (error) {
+  console.log(error)
+}
+}
+

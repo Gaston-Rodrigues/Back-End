@@ -2,9 +2,6 @@
 import express from 'express'
 import mongoose from 'mongoose'
 
-import productsRoutesFS from './routes/productsFS.routes.js'
-import cartsRoutesFS from './routes/cartsFS.routes.js'
-
 import productsRoutes from './routes/products.routes.js'
 import cartsRoutes from './routes/carts.routes.js'
 
@@ -71,8 +68,7 @@ app.set('view engine', 'handlebars')
 mongoose.connect(MONGO_URL)
 
 
-app.use('/api/productsfs', productsRoutesFS)
-app.use('/api/cartsfs', cartsRoutesFS)
+
 
 
 app.use('/api/products', productsRoutes)
