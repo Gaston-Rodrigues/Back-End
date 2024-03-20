@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { chatsModel } from "../models/chats.model.js"
+import { authorizationUser, checkUser } from "../middlewares/auth.js";
 
 
 const chatsRoutes = Router()
 
 
-chatsRoutes.post('/', async (req, res) => {
+chatsRoutes.post('/',checkUser,authorizationUser, async (req, res) => {
   console.log(req.body)
   try {
     const newMessage = req.body

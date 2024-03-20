@@ -1,4 +1,6 @@
 import { userModel } from "../models/user.model.js"
+import { isValidPassword } from "../utils/bcrypt.js"
+
 
 export const checkAuth = (req, res, next) => {
     if(!req.session.user){
@@ -28,6 +30,15 @@ export const checkLogin = async (req, res, next) => {
     }
 }
 
+
+export const checkUser = async(req,res,next)=>{
+if(!req.session.user){
+  return res.status(401).send({message:"User is not authenticated"}) 
+}
+else {
+     next()
+}
+}
 
 export const authorizationAdmin = async (req,res,next)=>{
     

@@ -29,7 +29,7 @@ export class ProdManager {
             return {message : " Product created" , rto: newProduct}
    
   } catch (error) {
-    return {message : "Product didnt created"}
+    return {message : "Product didnt create"}
   }
     }
 

@@ -72,7 +72,7 @@ export class CartManager{
         try {
             const cart = await cartsModel.findOne({_id: id}).populate('products.product')
             if (cart){
-                return {message: "OK", rdo: cart.products}
+                return cart.products
             }
             else {
                 return {message: "ERROR", rdo: "El carrito NO existe o no tiene productos"}

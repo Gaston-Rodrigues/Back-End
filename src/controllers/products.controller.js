@@ -1,6 +1,9 @@
 import ProdManager from "../dao/mongo/ProductManagerMongo.js";
 import { productsModel } from "../models/products.model.js"
 import ProductDto from "../dao/dto/product.dto.js";
+import CustomerErrors from "../errors/CustomError.js";
+import { generateProductErrorInfo, productNotFound } from "../errors/info.js";
+import ErrorEnum from "../errors/error.enum.js";
 
 
 
@@ -25,6 +28,14 @@ export const getProductsById = async (req, res) => {
     const { uId } = req.params
     try {
       const product = await productsModel.findOne({_id: uId})
+      if(!product){
+        CustomerErrors.createError({
+          name: "Product Dont Found",
+          casue: productNotFound(uId),
+          message: "Product not Found",
+          code: ErrorEnum.PRODUCT_NOT_FOUND,
+        })
+      }
       res.send({product})
     } catch (error) {
       console.error(error)
@@ -35,6 +46,14 @@ export const getProductsById = async (req, res) => {
 export const postProduct = async (req, res) => {
     try {
       const newProduct = req.body
+      if(!newProduct.title || !newProduct.description||!newProduct.code || !newProduct.price || !newProduct.stock || !newProduct.category){
+      CustomerErrors.createError({
+        name: "Product creation fails",
+        cause: generateProductErrorInfo(newProduct),
+        message:"Error triying create product",
+        code: ErrorEnum.INVALID_TYPES_ERROR
+
+      })}
       const added = await productsModel.create(newProduct)
       const result = new ProductDto(added)
       res.status(201).json({message: 'Producto añadido'})

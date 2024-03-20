@@ -11,6 +11,7 @@ const initializePassport = () => {
         {passReqToCallback: true, usernameField: 'email'},
         async (req, username, password, done) => {
             const {first_name, last_name, email, age} = req.body;
+            const rol = 'usuario'
             try {
                 const user = await userModel.findOne({email: username});
                 if(user){
@@ -22,6 +23,7 @@ const initializePassport = () => {
                     last_name,
                     email,
                     age,
+                    rol,
                     password: createHash(password)
                 }
 
@@ -67,6 +69,7 @@ const initializePassport = () => {
                         first_name: profile._json.name.split(' ')[0],
                         last_name: profile._json.name.split(' ')[1],
                         email: profile._json.email,
+                        rol: 'usuario',
                         password: 'GithubGenerated'
                     }
                     const result = await userModel.create(newUser);
@@ -77,7 +80,7 @@ const initializePassport = () => {
                 
                 return done(error);
             }
-        }
+        } 
     ))
 
     passport.serializeUser((user, done) => {
@@ -90,4 +93,4 @@ const initializePassport = () => {
     });
 }
 
-export default initializePassport;
+export default initializePassport;  
