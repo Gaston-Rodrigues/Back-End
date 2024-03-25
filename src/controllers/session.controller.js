@@ -27,15 +27,16 @@ export const postlogin =  async(req, res) => {
         }
         res.redirect('/products')
 }
-
+  
 export const postLogout =  async (req, res) => {
     try {
         req.session.destroy((err) => {
             if(err){
                 return res.status(500).json ({message: "Fallo al realizar Logout"})
-            }            
+            }    
+             res.send({redirect: '/login'})        
         })
-        res.redirect({redirect: '/login'})
+       
     } catch (error) {
         res.status(400).send({error})
     }

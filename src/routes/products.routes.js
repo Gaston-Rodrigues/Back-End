@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { deleteProduct, getProducts, getProductsById, postProduct, putProduct, } from "../controllers/products.controller.js";
+import { deleteProduct, getProducts, getProductsById, postProduct, putProduct } from "../controllers/products.controller.js";
 import { authorizationAdmin } from "../middlewares/auth.js";
 
 
@@ -17,4 +17,4 @@ productsRoutes.put('/:uId', putProduct, authorizationAdmin)
 
 
 
-export default productsRoutes
+export default productsRoutes 

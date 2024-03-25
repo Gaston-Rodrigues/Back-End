@@ -24,6 +24,8 @@ import { getVariables } from './config/config.js'
 import { Command } from 'commander'
 import mockingRoutes from './routes/mocking.routes.js'
 import { ErrorHandler } from './middlewares/error.js'
+import loggerRoutes from './routes/loggerTest.routes.js'
+import { addLogger } from './utils/logger.js'
 
 
 const app = express()
@@ -39,6 +41,7 @@ console.log(MONGO_URL)
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
+app.use(addLogger)
 
 
 
@@ -78,7 +81,8 @@ app.use('/api/products', productsRoutes)
 app.use('/api/carts', cartsRoutes)
 app.use('/api/chats', chatsRoutes)
 app.use('/api/session', sessionRoutes)
-app.use('/api/mockingProduct', mockingRoutes)
+app.use('/api/mockingproduct', mockingRoutes)
+app.use('/api/loggertest',loggerRoutes )
 app.use('/', viewsRoutes)
 app.use(ErrorHandler)
 app.listen(PORT, () => {

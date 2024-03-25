@@ -10,7 +10,9 @@ export const getVariables = (options) => {
     return {
         PORT: process.env.PORT, 
         MONGO_URL: process.env.MONGO_URL,
-        adminName: process.env.adminName,
-        password: process.env.password
+        ADMIN_NAME: process.env.ADMIN_NAME,
+        ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
+        LOGGER_MODE: process.env.LOGGER_MODE
+    
     }
 }

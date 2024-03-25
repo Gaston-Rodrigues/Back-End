@@ -15,7 +15,7 @@ export const getCarts = async (req, res) => {
       const carts = await cartsModel.find()
       res.send({carts})
     } catch (error) {
-      console.error(error)
+      req.logger.error(error)
       res.status(400).json({message: `No podemos devolver los carritos - ${error}`})
     }
 }
@@ -34,12 +34,14 @@ export const getCartsById = async (req, res) => {
       })
     }
     if (result.message="OK"){
+      req.logger.info('Cart Found')
       return res.status(200).json(result)
     }
     else {
       res.status(400).json(result)
     }
   } catch (error) {
+    req.logger.fatal('Cart not found')
     res.status(400).json({message: "El carrito no existe"})
   }
 }
@@ -48,8 +50,10 @@ export const postCart = async (req, res) => {
   try {
     const newCart = req.body
     const added = await cartsModel.create(newCart)
+    req.logger.info('Cart created')
     res.status(201).json({message: 'Carrito creado exitosamente'})
   } catch (error) {
+    req.logger.fatal('Cart Dont create')
     console.error(error)
     res.status(400).json({message: `No se pudo crear el carrito - ${error}`})
   }
@@ -57,7 +61,6 @@ export const postCart = async (req, res) => {
 
 export const deleteCartById = async (req, res) => {
   const { cId, pId } = req.params
-  console.log(cId)
   const cartManager = new CartManager()
 
   try {
@@ -65,10 +68,11 @@ export const deleteCartById = async (req, res) => {
     if(result){
       res.send({message: 'Producto eliminado'})
     } else {
+      req.logger.warning('Product dont removed')
       res.status(400).json({message: 'No se pudo eliminar'})
     }
   } catch (error) {
-    console.error(error)
+    req.logger.error('Product not removed')
     res.status(400).json({message: 'No se pudo eliminar'})
   }
 }
@@ -81,11 +85,14 @@ export const putCartById = async (req, res) => {
     const result = await cartManager.updateCart(cId, cart)
     if(result.modifiedCount > 0){
       res.send({message: "Carro modificado"})
-    } else {
+      req.logger.info('Cart modified')
+    }
+     else {
       res.status(400).send({message: "No se pudo modificar el carrito"})
+      req.logger.warning('Cart doesnt modified')
     }
   } catch (error) {
-    console.error(error)
+   req.logger.error(error)
     res.status(400).send({message: "No se pudo modificar el carrito"})
   }
 }
@@ -96,7 +103,7 @@ export const putProductsInCart = async (req, res) => {
   const {quantity} = req.body
 
   const result = await cartService.updateProductInCart(cId, pId, quantity)
-  console.log(result)
+  
 
   if(result){
    return res.send({message: "Producto actualizado"})
@@ -116,10 +123,9 @@ export const deleteProductsInCart = async (req, res) => {
     if (deleted){
       return res.status(200).json({message: 'Productos Eliminados'})
     }
-
+     req.logger.error('Cart not found')
     return res.status(404).json({message: "No se pudieron eliminar los productos"})
   } catch (error) {
-    console.log(error)
     return res.status(400).json({message: "No se pudieron eliminar los productos"})
     
   }
@@ -148,14 +154,14 @@ try {
   
 const  {cId} = req.params
 const cart = await cartService.getCartById(cId)
-const productNotAvailable = cart.products.filter( product => product.product.stock < product.quantity)
+const productNotAvailable = cart.products.filter( product =>  product.product.stock < product.quantity)
 if (productNotAvailable.length > 0) {
   return res.send({
     message: 'Product not available',
     rto: productNotAvailable,
   });
 }
-const productAvailable = cart.products.filter(product => product.product.stock >= product.quantity)
+const productAvailable = await cart.products.filter(product => product.product.stock >= product.quantity)
 const priceTotal = productAvailable.reduce((acc, product) =>{
 return acc + (product.product.price * product.quantity)
 },0 )
@@ -163,12 +169,12 @@ return acc + (product.product.price * product.quantity)
 for (const product of productAvailable) {
   const result = (product.product.stock - product.quantity)
   const newStock = {
-    stock : result
+    stock : result 
   }
 
   await productService.updateProduct(product.product._id, newStock)
 }
-
+ 
 const Ticket = {
    purchase : req.user.email,
    purchase_datetime : new Date(),
