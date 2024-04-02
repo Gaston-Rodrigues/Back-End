@@ -63,7 +63,7 @@ export class CartManager{
             }
             
         } catch (error) {
-            console.error(error)
+            req.logger.error(error)
             return false
         }
     }
@@ -78,7 +78,7 @@ export class CartManager{
                 return {message: "ERROR", rdo: "El carrito NO existe o no tiene productos"}
             }
         } catch (error) {
-            console.error(error)
+            req.logger.error(error)
             return {message: "ERROR", rdo: "Error"}
         }
 
@@ -89,7 +89,7 @@ export class CartManager{
             const resultado = await cartsModel.updateOne({_id: cId}, cart)
             return resultado
          } catch (error) {
-            console.error(error)
+            req.logger.error(error)
             return error            
          }
     }
@@ -112,7 +112,7 @@ export class CartManager{
             await cart.save()
             return true
         } catch (error) {
-            console.error(error)
+            req.logger.error(error)
             return false
         }
     }
@@ -129,7 +129,7 @@ export class CartManager{
                 return false
             }
         } catch (error) {
-            console.error(error)
+            req.logger.error(error)
             return false
             
         }

@@ -13,7 +13,7 @@ try {
         return {message: "OK" , rdo: result}
 
 } catch (error) {
-    console.log(error)
+    req.logger.error(error)
     return{mesasage : "Ticket not found"} 
 }
 }
@@ -21,10 +21,10 @@ try {
 async addTicket(ticket){
 try {
     const create = await ticketModel.create(ticket)
-    return {message: "Ticket created" , rdo: create} 
+    return  create
 
 } catch (error) {
-    console.log(error)
+    req.logger.error(error)
     
 }
 }

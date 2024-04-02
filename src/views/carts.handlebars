@@ -1,0 +1,12 @@
+<h1> Carrito</h1>
+
+<div>
+ <h2> Cliente {{user.first_name}} {{user.last_name}} tu compra es:</h2>
+ 
+ {{#each cart.products}}
+ <p>Producto {{this.product.title}}</p> 
+ <p>Precio: $ {{this.product.price}}</p> 
+ <p>Cantidad: {{this.quantity}}</p>
+ {{/each}}
+
+</div>

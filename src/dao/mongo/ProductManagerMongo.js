@@ -53,7 +53,7 @@ export class ProdManager {
             return {messasge : "product dont exits", rto: id}
            }
         } catch (error) {
-            console.log(error)
+            req.logger.error(error)
         }
       
         

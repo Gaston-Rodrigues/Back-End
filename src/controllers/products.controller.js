@@ -41,7 +41,7 @@ export const getProductsById = async (req, res) => {
     }
 }
 
-export const postProduct = async (req, res) => {
+export const postProduct = async (req, res,next) => {
     try {
       const newProduct = req.body
       if(!newProduct.title || !newProduct.description||!newProduct.code || !newProduct.price || !newProduct.stock || !newProduct.category){

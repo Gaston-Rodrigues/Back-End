@@ -9,7 +9,7 @@ export class User{
         const userAll = await userModel.find()
         return userAll
     } catch (error) {
-        console.log(error)
+        req.logger.error(error)
     }
    }
 

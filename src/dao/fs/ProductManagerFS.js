@@ -40,7 +40,7 @@ export class ProdManager{
             !product.price 
             || !product.stock == undefined || !product.stock == null 
             || !product.category) {
-            return console.error('Datos incompletos')   
+             req.logger.error('Datos incompletos')   
             }
         
         const available = product.available ?? 1;

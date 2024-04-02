@@ -64,26 +64,25 @@ export class CartManager{
         const existingCart = carts.find(cart => cart.id === idCart);
 
         if (existingCart) {
-            console.log("existe el carrito")
+           req.logger.error("existe el carrito")
        
             const existingProduct = existingCart.products.find(product => product.productId === idProd);
 
             if (existingProduct) {
   
-                console.log("existe el producto")
+                req.logger.error("existe el producto")
                 existingProduct.quantity += 1;
             } else {
            
-                console.log("NO existe el producto")
+                req.logger.error("NO existe el producto")
                 existingCart.products.push({productId: idProd, quantity: 1 });
             }
-          
-            console.log("Grabo los cambios")
-            console.log(carts)
+        
+            req.logger.info(carts)
             await fs.promises.writeFile(this.path, JSON.stringify(carts), 'utf-8');
 
         } else {
-            console.error(`Error: No existe el carrito con ID ${cartId}.`);
+            req.logger.error(`Error: No existe el carrito con ID ${cartId}.`);
             return "NO EXISTE";
         }
 

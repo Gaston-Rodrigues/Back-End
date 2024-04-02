@@ -54,7 +54,6 @@ export const postCart = async (req, res) => {
     res.status(201).json({message: 'Carrito creado exitosamente'})
   } catch (error) {
     req.logger.fatal('Cart Dont create')
-    console.error(error)
     res.status(400).json({message: `No se pudo crear el carrito - ${error}`})
   }
 }
@@ -135,7 +134,7 @@ export const postProductsInCart = async (req,res)=>{
 
   try{
     const {cId, pId} = req.params
-    const newQuantity =  req.body.quantity
+    const newQuantity =  1
     const carts = new CartManager()
     const result = await carts.addProductsInCart(cId, pId, newQuantity)
 
@@ -151,17 +150,19 @@ export const postProductsInCart = async (req,res)=>{
 
 export const purchaseCart = async(req,res)=>{
 try {
-  
 const  {cId} = req.params
 const cart = await cartService.getCartById(cId)
-const productNotAvailable = cart.products.filter( product =>  product.product.stock < product.quantity)
+
+const productNotAvailable = await cart.products.filter( product =>product.product.stock < product.quantity)
+const productAvailable = await cart.products.filter(product => product.product.stock >= product.quantity)
+
 if (productNotAvailable.length > 0) {
+ 
   return res.send({
     message: 'Product not available',
-    rto: productNotAvailable,
   });
 }
-const productAvailable = await cart.products.filter(product => product.product.stock >= product.quantity)
+
 const priceTotal = productAvailable.reduce((acc, product) =>{
 return acc + (product.product.price * product.quantity)
 },0 )
@@ -176,16 +177,18 @@ for (const product of productAvailable) {
 }
  
 const Ticket = {
-   purchase : req.user.email,
+   //purchase : req.user.email,
    purchase_datetime : new Date(),
    amount : priceTotal,
    code: Math.floor(Math.random() * 500000)+300000
 }
 await ticketService.addTicket(Ticket);
-return res.send({message: "ticket created"})
+return res.send( Ticket)
 
 } catch (error) {
-  console.log(error)
+  req.logger.error(error)
 }
 }
+
+
 

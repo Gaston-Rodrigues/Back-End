@@ -1,21 +1,21 @@
 import { Router } from "express";
-import productsRoutes from "./products.routes.js"
 import ProdManager from "../dao/mongo/ProductManagerMongo.js";
 import { checkAuth, checkExistingUser, checkLogin } from "../middlewares/auth.js";
+import CartManager from "../dao/mongo/CarritoManagerMongo.js";
 
 
 const viewsRoutes = Router()
 
 const prodManager = new ProdManager()
+const cartService = new CartManager()
 
 viewsRoutes.get('/', checkAuth,(req, res) => {
   const { user } = req.session
   res.render('index', user)
 })
 
- /*para poder utilizar el middleware de checklogin, como deberia utilizarlo por que directamente cuando ingreso al endpoitm de login, me sale solo el message de la funcion checkinLogin */ 
 
-viewsRoutes.get('/login', checkExistingUser , /*checkLogin*/ (req, res) => {
+viewsRoutes.get('/login', checkExistingUser , (req, res) => {
   res.render('login')
 })
 
@@ -40,6 +40,16 @@ viewsRoutes.get('/products',checkAuth ,async (req, res) => {
     res.status(500).send('Error interno del servidor');
   }
 });
+viewsRoutes.get('/carts/:cId',checkAuth, async(req,res)=>{
+try {  
+  const { user } = req.session
+  const{cId}= req.params
+  const cart = await cartService.getCartById({_id : cId})
+  res.render('carts', {cart, user})
+} catch (error) {
+  res.status(500).send('Cart not Found');
+}
+})
 
 viewsRoutes.get('/failregister', (req, res) => {
   res.render('failregister')

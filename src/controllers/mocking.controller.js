@@ -24,7 +24,7 @@ export const getProductMock = async (req,res)=>{
   }
    return res.send({status: "sucess", payload: products})
     } catch (error) {
-      console.log(error)
+      req.logger.error(error)
     }
 
   }

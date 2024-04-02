@@ -7,4 +7,4 @@ export default class CustomerErrors{
     error.code = code
     throw error
  }
-}
+} 

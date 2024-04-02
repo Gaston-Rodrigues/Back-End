@@ -6,7 +6,7 @@ export const getVariables = (options) => {
     dotenv.config({
         path: enviroment === 'production' ? './src/.env.production' : './src/.env.development'
     })
-
+ 
     return {
         PORT: process.env.PORT, 
         MONGO_URL: process.env.MONGO_URL,
@@ -15,4 +15,4 @@ export const getVariables = (options) => {
         LOGGER_MODE: process.env.LOGGER_MODE
     
     }
-}
+} 
