@@ -1,0 +1,207 @@
+paths: 
+    /api/products:
+      get:
+        summary: Obtiene todos los productos
+        tags:
+         - Products
+        responses:
+          "200":
+            description: Productos obtenidos
+            content: 
+              application/json:
+                schema:
+                  type: array
+                  items: 
+                    $ref: '#components/schemas/Products'
+          "500":
+            description: Error de servidor
+          
+      post:
+        summary: Crea un producto
+        tags: 
+          - Products
+        responses:
+          "201":
+            description: Producto creado
+        requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#components/requestBodies/createProduct'
+    /api/products/{pId}:
+      get: 
+        summary: Obtiene un producto por su id
+        tags: 
+          - Products
+        parameters:
+        - in: path
+          name: uId
+          schema:
+            type: string
+          required: true
+          description: ID del producto a obtener
+        responses: 
+          "200":
+            description: Producto obtenido
+          "404":
+            description: Producto no encontrado
+      delete: 
+        summary: Borra un producto por Id
+        tags:
+          - Products
+        parameters:
+        - in: path
+          name: uId
+          schema:
+            type: string
+          required: true
+          description: ID del producto para borrar
+        responses: 
+          "200":
+            description: Producto borrado
+          "404":
+            description: Producto no encontrado
+      put: 
+        summary: Actualiza un producto
+        tags: 
+          - Products
+        parameters:
+          - name: uId
+            in: path
+            description: Id del producto para actualizaar
+            schema: 
+              type: string
+        requestBody:
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/requestBodies/updateProduct'  
+        responses:
+          "200":
+            description: Producto actualizado
+          "400":
+            description: Error porducto no actualizado
+
+
+components:
+    schemas: 
+      Products:
+        type: object
+        properties:
+          _id:
+            type: ObjectId
+            description: Id de mongo autogenerado
+          title:
+            type: String
+            description: Nombre del producto
+          description:
+            type: String
+            description: Detalles del producto
+          code:
+            type: String
+            description: Codigo del producto
+          price: 
+            type: Number
+            description: Precio del producto
+          available: 
+            type: Boolean
+            description: Disponibilidad del producto
+          stock: 
+            type: Number
+            description: Numero de stock del producto
+          category:
+            type: String
+            description: categoria del producto
+          thumbnail:
+            type: String
+            description: Path de la imagen del producto 
+        example:  
+          id: ObjectId(65b2e8be88f736353f762519)
+          title : honda
+          description: cv-600
+          code: 6
+          price: 4000
+          stock : 10
+          category: calle
+    requestBodies:
+        createProduct: 
+          type: object
+          properties:
+            _id:
+              type: ObjectId
+              description: Id de mongo autogenerado
+            title:
+              type: String
+              description: Nombre del producto
+            description:
+              type: String
+              description: Detalles del producto
+            code:
+              type: String
+              description: Codigo del producto
+            price: 
+              type: Number
+              description: Precio del producto
+            available: 
+              type: Boolean
+              description: Disponibilidad del producto
+            stock: 
+              type: Number
+              description: Numero de stock del producto
+            category:
+              type: String
+              description: categoria del producto
+            thumbnail:
+              type: String
+              description: Path de la imagen del producto 
+          example:
+            id: ObjectId(65b2e8be88f736353f762519)
+            title : honda
+            description: cv-600
+            code: 6
+            price: 4000
+            stock : 10
+            category: calle
+        updateProduct:
+          type: object
+          properties:
+            _id:
+              type: ObjectId
+              description: Id de mongo autogenerado
+            title:
+              type: String
+              description: Nombre del producto
+            description:
+              type: String
+              description: Detalles del producto
+            code:
+              type: String
+              description: Codigo del producto
+            price: 
+              type: Number
+              description: Precio del producto
+            available: 
+              type: Boolean
+              description: Disponibilidad del producto
+            stock: 
+              type: Number
+              description: Numero de stock del producto
+            category:
+              type: String
+              description: categoria del producto
+            thumbnail:
+              type: String
+              description: Path de la imagen del producto 
+          example:  
+            id: ObjectId(65b2e8be88f736353f762519)
+            title : honda
+            description: cv-600
+            code: 6
+            price: 4000
+            stock : 10
+            category: calle  
+
+
+
+          

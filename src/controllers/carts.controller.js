@@ -177,7 +177,7 @@ for (const product of productAvailable) {
 }
  
 const Ticket = {
-   //purchase : req.user.email,
+ // purchase : req.user.email,
    purchase_datetime : new Date(),
    amount : priceTotal,
    code: Math.floor(Math.random() * 500000)+300000

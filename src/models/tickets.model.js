@@ -15,6 +15,10 @@ purchase_datetime: {
     default: Date.now()
 },
 
+email:{
+    type : String,
+    unique: true
+},
 amount : {
 type: Number,
 required : true,

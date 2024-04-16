@@ -1,6 +1,6 @@
-import { ticketModel } from "../../models/ticket.model.js"
+import { ticketModel } from "../../models/tickets.model.js"
 
-ticketModel
+
 export default class Ticket{
  constructor(){
 

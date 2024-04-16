@@ -2,12 +2,14 @@ import { Router } from "express";
 import ProdManager from "../dao/mongo/ProductManagerMongo.js";
 import { checkAuth, checkExistingUser, checkLogin } from "../middlewares/auth.js";
 import CartManager from "../dao/mongo/CarritoManagerMongo.js";
+import Ticket from "../dao/mongo/TicketManagerMongo.js";
 
 
 const viewsRoutes = Router()
 
 const prodManager = new ProdManager()
 const cartService = new CartManager()
+const ticketService = new Ticket()
 
 viewsRoutes.get('/', checkAuth,(req, res) => {
   const { user } = req.session
@@ -59,7 +61,18 @@ viewsRoutes.get('/faillogin', (req, res) => {
   res.render('faillogin')
 
 })
+viewsRoutes.post('/tickets', async (req,res)=>{
+  try {
+    const {user} = req.session
+    const{ticket}= req.body
+const compra = await ticketService.addTicket({ticket})
 
+  res.render('tickets',{user,compra})
+  } catch (error) {
+    res.status(500).send('Ticket not Found');
+  }
+
+})
 
 
 

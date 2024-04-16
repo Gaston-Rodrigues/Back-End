@@ -1,0 +1,14 @@
+<div>
+  
+  <h1>Su ticket de compra</h1>
+
+  <form action="/api/session/tickets" method="post">
+  
+{{#each tickets}}
+
+<p>Email: {{this.tickets.email}}</p>
+<p> Fecha y hora de la compra: {{this.tickets.purchase_datetime}} </p>
+<p>Codigo : {{this.tickets.code}}</p>
+<p>Total: {{this.tickets.amount}}</p>
+</form>
+</div>

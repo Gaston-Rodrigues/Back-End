@@ -1,0 +1,231 @@
+paths:
+  /api/carts:
+    get:
+      summary: Obtiene todos los carritos
+      tags: 
+        - Carts
+      responses:
+        "200":
+          description: Carritos encontrados
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#components/schemas/Carts'
+        "500":
+          description: Error del servidor 
+    post:
+      summary: Crea un carrito nuevo
+      tags: 
+        - Carts
+      responses:
+        "201":
+          description: Carrito creado
+      requestBody:
+        content:
+          appication/json:
+            schema:
+              $ref: '#components/requestBodies/createCart'
+        "400":
+          description: Error carrito no creado 
+  /api/carts/{cId}:
+    get:
+      summary: Obtiene el carrtio por Id
+      tags: 
+        - Carts
+      parameters:
+      - in: path
+        name: cId
+        schema:
+          type: string
+        required: true
+        description: ID del carrito a obtener  
+      responses:
+      "200":
+        description: Carrito obtenido
+      "400":
+        description: Carrito no encontrado
+    delete:
+      summary: Borra el carrito por ID
+      tags:
+        - Carts
+      parameters:
+      - in: path
+        name: cId
+        schema:
+          type: string
+        required: true
+        decription: Id del carrito a borrar
+      responses:
+        "200":
+          description: Carrito borrado
+        "400":
+          description: Carrito no encontrado
+    put: 
+      summary: Actualiza un carrito 
+      tags: 
+        - Carts
+      parameters:
+      - in: path
+        name: cId
+        schema:
+          type: string
+      requestBody:
+        content:
+          appication/json:
+            schema:
+              $ref: '#components/requestBodies/updateCart'
+      responses: 
+        "200":
+          description: Carrito actualizado
+        "400":
+          description: Carrito no actualizado
+
+  /api/{cId}/products/{pId}:
+    post:
+      summary: Agrega un producto al carrito
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cId
+          schema:
+            type: string
+          required: true 
+          description: Id del carrito para agregarle un producto
+        - in: path
+          name: pId
+          schema:
+            type: string
+          required: true 
+          description: Id del producto para agregarlo al carrito
+      responses: 
+        "200":
+          description: Producto agregado correctamente al carrito
+        "400":
+          description: Producto no agregado
+    delete:
+      summary: Elimina un producto del carrito
+      tags:
+        - Carts
+      parameters:
+        - in: path
+          name: cId
+          schema:
+            type: string
+          required: true 
+          description: Id del carrito para eliminar un producto
+        - in: path
+          name: pId
+          schema:
+            type: string
+          required: true 
+          description: Id del producto para eliminarlo del carrito
+      responses: 
+        "200":
+          description: Producto eliminado correctamento del carrito
+        "400":
+          description: Producto no eliminado
+  /api/cart/{cId}/purchase:
+    post:
+      summary: Realizar la compra de un carrito
+      tags: 
+        - Carts
+      parameters:
+        - in: path
+          name: cId
+          schema:
+            type: string
+          required: true
+          description: ID del carrito que se comprará y generará el ticket
+      responses:
+        '200':
+          description: Compra realizada correctamente
+        '400':
+          description: Error al procesar la compra
+        '500':
+          description: Error del servidor
+    
+components:
+    schemas:
+      Carts:
+        type: object
+        properties:
+          products:
+            type: array
+            items:
+              type: object
+              properties:
+                product:
+                  type: string
+                  description: Id del producto
+                quantity: 
+                  type: Number
+                  description: cantidad del producto en el carrito
+        example:
+          products:
+            - product: "  Zanella"
+              quantity: 4
+            - product: "Honda"
+              quantity: 3          
+
+    requestBodies:
+      createCart: 
+        type: object
+      updateCart:
+        type: object 
+        properties:
+          products:
+             type: array
+          properties:
+            product:
+              type: object
+              porperties:
+                _id:
+                  type: ObjectId
+                  description: Id de mongo autogenerado
+                title:
+                  type: String
+                  description: Nombre del producto
+                description:
+                  type: String
+                  description: Detalles del producto
+                code:
+                  type: String
+                  description: Codigo del producto
+                price: 
+                  type: Number
+                  description: Precio del producto
+                available: 
+                  type: Boolean
+                  description: Disponibilidad del producto
+                stock: 
+                  type: Number
+                  description: Numero de stock del producto
+                category:
+                  type: String
+                  description: categoria del producto
+                thumbnail:
+                  type: String
+        example:
+          products: [
+            product: {
+            id: ObjectId(65b2e8be88f736353f762519),
+            title : honda,
+            description: cv-600,
+            code: 6,
+            price: 4000,
+            stock : 10,
+            category: calle,
+            }
+          ] 
+
+ 
+        
+        
+
+      
+
+  
+

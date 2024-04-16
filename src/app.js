@@ -1,6 +1,8 @@
 
 import express from 'express'
 import mongoose from 'mongoose'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUiExoress from "swagger-ui-express"
 
 import productsRoutes from './routes/products.routes.js'
 import cartsRoutes from './routes/carts.routes.js'
@@ -26,6 +28,7 @@ import mockingRoutes from './routes/mocking.routes.js'
 import { ErrorHandler } from './middlewares/error.js'
 import loggerRoutes from './routes/loggerTest.routes.js'
 import { addLogger } from './utils/logger.js'
+import { swaggerConfiguration } from './utils/swagger-configuration.js'
 
 
 const app = express()
@@ -35,8 +38,12 @@ program.option('--mode <mode>', 'Modo de trabajo', 'production')
 const options = program.parse()
 const { PORT, MONGO_URL } = getVariables(options)
 
+
 console.log(PORT)
 console.log(MONGO_URL)
+
+const specs = swaggerJSDoc(swaggerConfiguration)
+app.use('/apidocs', swaggerUiExoress.serve, swaggerUiExoress.setup(specs))
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
