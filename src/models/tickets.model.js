@@ -17,18 +17,18 @@ purchase_datetime: {
 
 email:{
     type : String,
-    unique: true
+    required : true,
+    
 },
-amount : {
+amount: {
 type: Number,
 required : true,
 default: 0
 },
 
-purchase : {
+purchaser: {
 type : String,
 require : true 
-
 }
 })
 

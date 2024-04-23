@@ -32,7 +32,8 @@ export const checkLogin = async (req, res, next) => {
 
 
 export const checkUser = async(req,res,next)=>{
-if(!req.session.user){
+if(req.session?.user?.role !== "user" ){
+    
   return res.status(401).send({message:"User is not authenticated"}) 
 }
 else {
@@ -42,21 +43,21 @@ else {
 
 export const authorizationAdmin = async (req,res,next)=>{
     
-if(req.session.user.role === "admin"){
-    next()
+if(req.session?.user?.role !== "admin"){
+   return res.status(401).send({message: "Unauthorization"})
 }
 else{
-     return res.status(401).send({message: "Unauthorization"})
+     next() 
 }
 
 }
 
 export const authorizationUser = async (req,res,next)=>{
-    if(req.session.user.role === "user"){
-        next()
+    if(req.session.user.role !== "user"){
+        return res.status(401).send({message: "Unauthorization"})
     }
     else{
-         return res.status(401).send({message: "Unauthorization"})
+         next()
     }
     
     }

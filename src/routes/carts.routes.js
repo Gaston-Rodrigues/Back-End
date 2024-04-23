@@ -19,7 +19,7 @@ cartsRoutes.delete('/:cId/products/:pId', deleteCartById)
 cartsRoutes.put('/:cId/products/:pId',checkUser,authorizationUser, putProductsInCart)
 cartsRoutes.post("/:cId/product/:pId",checkUser,authorizationUser, postProductsInCart)
 
-cartsRoutes.post("/:cId/purchase", purchaseCart)
+cartsRoutes.post("/:cId/purchase",checkUser,authorizationUser,purchaseCart)
 
 
 export default cartsRoutes 

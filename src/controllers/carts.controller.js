@@ -149,46 +149,44 @@ export const postProductsInCart = async (req,res)=>{
 }
 
 export const purchaseCart = async(req,res)=>{
-try {
-const  {cId} = req.params
-const cart = await cartService.getCartById(cId)
-
-const productNotAvailable = await cart.products.filter( product =>product.product.stock < product.quantity)
-const productAvailable = await cart.products.filter(product => product.product.stock >= product.quantity)
-
-if (productNotAvailable.length > 0) {
- 
-  return res.send({
-    message: 'Product not available',
-  });
-}
-
-const priceTotal = productAvailable.reduce((acc, product) =>{
-return acc + (product.product.price * product.quantity)
-},0 )
-
-for (const product of productAvailable) {
-  const result = (product.product.stock - product.quantity)
-  const newStock = {
-    stock : result 
+  try {
+  const  {cId} = req.params
+  const cart = await cartService.getCartById(cId)
+  
+  const productNotAvailable = await cart.products.filter( product =>product.product.stock < product.quantity)
+  const productAvailable = await cart.products.filter(product => product.product.stock >= product.quantity)
+  
+  if (productNotAvailable.length > 0) {
+   
+    return res.send({
+      message: 'Product not available',
+    });
   }
-
-  await productService.updateProduct(product.product._id, newStock)
-}
- 
-const Ticket = {
- // purchase : req.user.email,
-   purchase_datetime : new Date(),
-   amount : priceTotal,
-   code: Math.floor(Math.random() * 500000)+300000
-}
-await ticketService.addTicket(Ticket);
-return res.send( Ticket)
-
-} catch (error) {
-  req.logger.error(error)
-}
-}
-
-
-
+  
+  const priceTotal = productAvailable.reduce((acc, product) =>{
+  return acc + (product.product.price * product.quantity)
+  },0 )
+  
+  for (const product of productAvailable) {
+    const result = (product.product.stock - product.quantity)
+    const newStock = {
+      stock : result 
+    }
+  
+    await productService.updateProduct(product.product._id, newStock)
+  }
+   
+  const Ticket = {
+    
+     purchase_datetime:new Date(),
+     amount:priceTotal,
+     code: Math.floor(Math.random() * 500000)+300000,
+     purchaser:req.user.email
+  }
+  await ticketService.addTicket(Ticket);
+  return res.send( Ticket)
+  
+  } catch (error) {
+    req.logger.error(error)
+  }
+  } 

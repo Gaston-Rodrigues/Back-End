@@ -13,7 +13,7 @@ const userSchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+
     },
     age: {
         type: Number,
@@ -24,14 +24,15 @@ const userSchema = mongoose.Schema({
         required: true
     },
 
-    role :{
+    role : {
         type: String,
-        default:'user'
+        default:'user',
+        required: true
     },
 
     cart: {
    type : mongoose.Schema.ObjectId,
-   required: false, 
+   
    ref : 'carts'
     },
 
