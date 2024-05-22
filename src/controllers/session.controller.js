@@ -1,9 +1,33 @@
 import Userdto from "../dao/dto/user.dto.js";
 import { userModel } from "../models/user.model.js";
 import { createHash } from "../utils/bcrypt.js";
+import {User} from "../dao/mongo/UserManagerMongo.js";
 
 
+const UserMongo = new User()
 
+
+export const getUsers = async(req,res)=>{
+    try {
+
+        const result = await UserMongo.getUser()
+        res.send({result})
+    } catch (error) {
+        res.status(400).send({error})
+    }
+}
+
+
+export const getUserById = async(req,res)=>{
+try {
+    const {uId} = req.params
+const result = await UserMongo.getUserById(uId)
+res.send(result)
+
+} catch (error) {
+    res.status(400).send({error})
+}
+}
 export const postSession = async(req,res)=>{
     req.session.user = {
         first_name: req.user.first_name,
@@ -61,4 +85,44 @@ export const postRecovery = async (req, res) => {
     user.password = createHash(password);
     user.save();
     res.send({message: 'cambio de contraseña con exito!'});
-};
+}
+export const deleteUserOffline =async(req,res)=>{
+    try {
+        const result = await UserMongo.lastConnectionDeletedUser()
+        if(result){
+            return res.status(200).json(result)
+        }
+
+    } catch (error) {
+        res.status(400).send({error})
+    }
+}
+
+export const deleteUserById = async (req,res)=>{
+   try {
+     const {uId} = req.params
+     const deleted = await UserMongo.deleteUser(uId)
+     if(deleted){
+        return res.status(200).send({message: "User deleted"})
+     }
+   } catch (error) {
+    res.status(400).send({error})
+    
+   }
+}
+
+   export const changeRol = async(req,res)=>{
+    const {uId} = req.params
+    
+    try { 
+     const changes = await UserMongo.changesRol(uId)
+     if(changes){
+        res.send({message: "Role Modified "})
+        req.logger.info('User role modified')
+    }
+
+    } catch (error) {
+        res.status(400).send({error})
+    }
+   }
+

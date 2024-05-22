@@ -21,17 +21,16 @@ export class ProdManager {
             return {message: "ERROR", rdo: "No hay productos"}
         }
     }
-
     async addProduct(product){
 
-  try {
-        const newProduct = await productsModel.create(product)
-            return {message : " Product created" , rto: newProduct}
-   
-  } catch (error) {
-    return {message : "Product didnt create"}
-  }
-    }
+        try {
+              const newProduct = await productsModel.create(product)
+                  return  newProduct
+         
+        } catch (error) {
+          return {message : "Product dont created"}
+        }
+          }
 
     async getProductById(pId){
         try {

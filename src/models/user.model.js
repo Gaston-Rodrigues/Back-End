@@ -24,16 +24,19 @@ const userSchema = mongoose.Schema({
         required: true
     },
 
-    role : {
+    role: {
         type: String,
-        default:'user',
+        default: "user",
         required: true
+    },
+    lastConnection:{
+        type: Date,
+        default : Date.now   
     },
 
     cart: {
-   type : mongoose.Schema.ObjectId,
-   
-   ref : 'carts'
+        type : mongoose.Schema.ObjectId,
+        ref : 'carts'
     },
 
 })

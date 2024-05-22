@@ -12,7 +12,10 @@ export const getVariables = (options) => {
         MONGO_URL: process.env.MONGO_URL,
         ADMIN_NAME: process.env.ADMIN_NAME,
         ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
-        LOGGER_MODE: process.env.LOGGER_MODE
-    
+        LOGGER_MODE: process.env.LOGGER_MODE,
+        mailing:{
+        USER: process.env.MAILING_USER,
+        GOOGLE_PASSWORD: process.env.GOOGLE_PASSWORD,
+        SERVICE: process.env.MAILING_SERVICE}
     }
-} 
+}  

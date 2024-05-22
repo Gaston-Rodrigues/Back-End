@@ -134,6 +134,23 @@ export class CartManager{
             
         }
     }
+    async deleteProductByCart(cId, pId) {
+        try {
+          const result = await cartsModel.updateOne(
+            { _id: cId },
+            { $pull: { products: { product: new mongoose.Types.ObjectId(pId) } } }
+          )
+      
+          if (result.modifiedCount > 0) {
+            return { message: "OK", rdo: `Producto del carrito con ID ${cId} eliminado exitosamente.` }
+          } else {
+            return { message: "ERROR", rdo: `Producto con ID ${pId} no encontrado en el carrito con ID ${cId}.` }
+          }
+        } 
+        catch (e) {
+          return {message: "ERROR" , rdo: "Error al momento de eliminar el producto en el carrito"}
+        }
+      }
 
 }
 

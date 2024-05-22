@@ -129,6 +129,24 @@ export const deleteProductsInCart = async (req, res) => {
     
   }
 }
+export const deleteProductCartById = async (req, res,) => {
+  try{
+    const {cId, pId} = req.params
+    const carts = new CartManager()
+
+    const deleted = await carts.deleteProductByCart(cId,pId)
+
+    if (deleted.message==="OK")
+      return res.status(200).json(deleted.rdo)
+
+    req.logger.error("Error Borrar Producto Carrito")
+
+  } 
+  catch (error) {
+    req.logger.fatal(error.message)
+    next(error)
+  }
+}
 
 export const postProductsInCart = async (req,res)=>{
 
@@ -181,7 +199,8 @@ export const purchaseCart = async(req,res)=>{
      purchase_datetime:new Date(),
      amount:priceTotal,
      code: Math.floor(Math.random() * 500000)+300000,
-     purchaser:req.user.email
+     purchaser:req.user.email,
+ 
   }
   await ticketService.addTicket(Ticket);
   return res.send( Ticket)

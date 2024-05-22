@@ -15,11 +15,7 @@ purchase_datetime: {
     default: Date.now()
 },
 
-email:{
-    type : String,
-    required : true,
-    
-},
+
 amount: {
 type: Number,
 required : true,

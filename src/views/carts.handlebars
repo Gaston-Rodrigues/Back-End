@@ -7,8 +7,10 @@
  <p>Producto {{this.product.title}}</p> 
  <p>Precio: $ {{this.product.price}}</p> 
  <p>Cantidad: {{this.quantity}}</p>
+ <button id={{this._id}} name="btn-delete-product" class='btnEliminar'>Eliminar</button>
+ 
  {{/each}}
  
-    <button type="button"><a href="/tickets">Concretar compra</a></button>
+    <button type="button"><a href="/:cId/purchases">Concretar compra</a></button>
 
-</div>
+</div>   

@@ -1,8 +1,9 @@
 import { Router } from "express";
 import ProdManager from "../dao/mongo/ProductManagerMongo.js";
-import { checkAuth, checkExistingUser, checkLogin } from "../middlewares/auth.js";
+import { checkAuth, checkExistingUser,authorizationAdmin } from "../middlewares/auth.js";
 import CartManager from "../dao/mongo/CarritoManagerMongo.js";
 import Ticket from "../dao/mongo/TicketManagerMongo.js";
+import { User } from "../dao/mongo/UserManagerMongo.js";
 
 
 const viewsRoutes = Router()
@@ -10,13 +11,29 @@ const viewsRoutes = Router()
 const prodManager = new ProdManager()
 const cartService = new CartManager()
 const ticketService = new Ticket()
+const userManager = new User()
 
 viewsRoutes.get('/', checkAuth,(req, res) => {
   const { user } = req.session
   res.render('index', user)
 })
-
-
+viewsRoutes.get('/users', async(req,res)=>{
+  const resultado = await userManager.getUser()
+  res.render('allUsers', {title: "Usuario", data: resultado.rdo})
+})
+viewsRoutes.get('/user', async (req, res) =>{
+ 
+  try {
+    const {user} = req.session
+   const resultado = await userManager.getUser()
+   res.render('useradmin', {title: "Usuario", data: resultado.rdo, user: user })
+  } catch (error) {
+   res.status(500).send(' not Found');
+  }
+ 
+     
+ })
+ 
 viewsRoutes.get('/login', checkExistingUser , (req, res) => {
   res.render('login')
 })
