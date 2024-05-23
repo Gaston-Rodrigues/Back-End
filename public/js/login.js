@@ -6,7 +6,7 @@ const resultMessage = document.getElementById('resultMessage');
 restoreBtn.addEventListener('click', async (e) => {
     const email = emailInput.value;
     const password = passwordInput.value;
-    const result = await fetch('http://localhost:8080/api/session/recovery', {
+    const result = await fetch('https://back-end-production-4d62.up.railway.app/api/session/recovery', {
         body: JSON.stringify({email, password}),
         headers: {
             'Content-Type': 'application/json',

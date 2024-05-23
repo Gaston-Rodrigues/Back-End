@@ -2,7 +2,7 @@ const btns = document.getElementsByTagName('button');
 
 const addProductToCart = async (pId) => {
     try {
-        const result = await fetch(`http://localhost:8080/api/cart/664e391cfcd9bbd2d8a060bb/product/${pId}`, {
+        const result = await fetch(`https://back-end-production-4d62.up.railway.app/api/cart/664e391cfcd9bbd2d8a060bb/product/${pId}`, {
             body: JSON.stringify({
                 quantity: 1
             }),
@@ -30,7 +30,7 @@ for(let btn of btns){
 }
 const deleteProduct = async (uId) =>{
     try{
-        const responseProductDelete = await fetch(`http://localhost:8080/api/carts/${cId}/product/${pId}`, {
+        const responseProductDelete = await fetch(`https://back-end-production-4d62.up.railway.app/api/carts/${cId}/product/${pId}`, {
           method: 'DELETE',
           headers: {
               'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 const changeRol = async (uId) =>{
     try{
-      const responseUserRol = await fetch(`http://localhost:8080/api/session/${uId}/changeRol`, {
+      const responseUserRol = await fetch(`https://back-end-production-4d62.up.railway.app/api/session/${uId}/changeRol`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -16,7 +16,7 @@ const changeRol = async (uId) =>{
           timer: 1500
         })
       }
-      else
+      else 
       {
         Swal.fire({
           icon: "error",
@@ -32,7 +32,7 @@ const changeRol = async (uId) =>{
   
   const deleteUser = async (uId) =>{
     try{
-        const responseUserDelete = await fetch(`http://localhost:8080/api/session/${uId}`, {
+        const responseUserDelete = await fetch(`https://back-end-production-4d62.up.railway.app/api/session/${uId}`, {
           method: 'DELETE',
           headers: {
               'Content-Type': 'application/json',
